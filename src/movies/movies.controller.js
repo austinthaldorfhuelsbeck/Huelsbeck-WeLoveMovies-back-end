@@ -39,13 +39,18 @@ async function readTheatersByMovieId(req, res) {
 async function readReviewsByMovieId(req, res) {
   const id = req.params.movieId;
   const reviewsData = await service.readReviewsByMovieId(id);
+  const critics = await service.listCritics();
+
+  console.log(critics);
 
   const now = new Date().toISOString();
   const timestamp = { created_at: now, updated_at: now };
 
-  // TODO: append critic to each review
   const data = reviewsData.map((review) => {
-    return { ...review, ...timestamp };
+    const foundCritic = {
+      critic: critics.find((critic) => critic.critic_id === review.critic_id),
+    };
+    return { ...review, ...timestamp, ...foundCritic };
   });
 
   res.json({ data });
