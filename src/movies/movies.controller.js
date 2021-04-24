@@ -24,7 +24,16 @@ function read(req, res) {
 
 async function readTheatersByMovieId(req, res) {
   const id = req.params.movieId;
-  const data = await service.readTheatersByMovieId(id);
+  const theatersData = await service.readTheatersByMovieId(id);
+  console.log(theatersData);
+
+  const now = new Date().toISOString();
+  const timestamp = { created_at: now, updated_at: now };
+
+  const data = theatersData.map((theater) => {
+    return { ...theater, ...timestamp };
+  });
+
   res.json({ data });
 }
 
