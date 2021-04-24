@@ -43,6 +43,7 @@ async function readReviewsByMovieId(req, res) {
   const now = new Date().toISOString();
   const timestamp = { created_at: now, updated_at: now };
 
+  // TODO: append critic to each review
   const data = reviewsData.map((review) => {
     return { ...review, ...timestamp };
   });

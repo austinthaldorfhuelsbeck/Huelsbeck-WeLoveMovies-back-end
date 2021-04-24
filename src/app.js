@@ -6,6 +6,7 @@ const app = express();
 // ROUTES
 const moviesRouter = require("./movies/movies.router");
 const theatersRouter = require("./theaters/theaters.router");
+const reviewsRouter = require("./reviews/reviews.router");
 // ERROR HANDLERS
 const notFound = require("./errors/notFound");
 const errorHandler = require("./errors/errorHandler");
@@ -16,6 +17,7 @@ app.use(express.json());
 // Route handlers
 app.use("/movies", moviesRouter);
 app.use("/theaters", theatersRouter);
+app.use("/reviews", reviewsRouter);
 
 // Error handlers
 app.use(notFound);
