@@ -19,7 +19,7 @@ function read(id) {
 function readTheatersByMovieId(id) {
   return knex("theaters as t")
     .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
-    .select("t.*")
+    .select("t.*", "mt.is_showing", "mt.movie_id")
     .where({ "mt.movie_id": id });
 }
 
