@@ -2,7 +2,8 @@ const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 async function reviewExists(req, res, next) {
-  const review = await service.read(req.params.reviewId);
+  const reviewList = await service.read(req.params.reviewId);
+  const review = reviewList[0];
   if (review) {
     res.locals.review = review;
     return next();
@@ -11,15 +12,19 @@ async function reviewExists(req, res, next) {
 }
 
 function read(req, res) {
-  const { review: data } = res.locals;
-  res.json({ data: data });
+  const { review: reviewData } = res.locals;
+  res.json({ data: reviewData });
 }
 
 async function update(req, res) {
-  const updatedReview = { ...req.body.data };
-  console.log(updatedReview);
-  const data = await service.update(updatedReview);
-  res.json({ data });
+  const updatedReview = { ...req.body };
+  const { review: reviewData } = res.locals;
+  const reviewId = reviewData.review_id;
+
+  const updatedData = await service.update(updatedReview, reviewId);
+
+  // TODO: Complete the full response
+  res.json({ data: updatedData[0] });
 }
 
 async function destroy(req, res) {
