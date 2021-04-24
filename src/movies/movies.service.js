@@ -8,11 +8,10 @@ function listCritics() {
   return knex("critics").select("*");
 }
 
-// TODO fix this broken function
 function listIsShowing() {
   return knex("movies as m")
     .join("movies_theaters as mt", "m.movie_id", "mt.movie_id")
-    .select("m.*")
+    .distinct("m.*")
     .where({ "mt.is_showing": true });
 }
 

@@ -41,8 +41,6 @@ async function readReviewsByMovieId(req, res) {
   const reviewsData = await service.readReviewsByMovieId(id);
   const critics = await service.listCritics();
 
-  console.log(critics);
-
   const now = new Date().toISOString();
   const timestamp = { created_at: now, updated_at: now };
 
