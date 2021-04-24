@@ -23,6 +23,10 @@ function readTheatersByMovieId(id) {
     .where({ "mt.movie_id": id });
 }
 
+function readSingleCritic(id) {
+  return knex("critics as c").select("*").where({ "c.critic_id": id });
+}
+
 function readReviewsByMovieId(id) {
   return knex("reviews as r")
     .join("movies as m", "r.movie_id", "m.movie_id")
@@ -35,5 +39,6 @@ module.exports = {
   listIsShowing,
   read,
   readTheatersByMovieId,
+  readSingleCritic,
   readReviewsByMovieId,
 };
