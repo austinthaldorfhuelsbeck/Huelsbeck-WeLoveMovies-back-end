@@ -22,7 +22,20 @@ function read(req, res) {
   res.json({ data: data });
 }
 
+async function readTheatersByMovieId(req, res) {
+  const id = req.params.movieId;
+  const data = await service.readTheatersByMovieId(id);
+  res.json({ data });
+}
+
+async function readReviewsByMovieId(req, res) {
+  const id = req.params.movieId;
+  const data = await service.readReviewsByMovieId(id);
+  res.json({ data });
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(movieExists), read],
+  readTheatersByMovieId: [asyncErrorBoundary(readTheatersByMovieId)],
 };
