@@ -7,7 +7,6 @@ async function readMoviesByTheaterId(req, res) {
   res.json({ data })
 }
 
-// TODO: include movies each theater is showing
 async function list(req, res) {
   const theaters = await service.list()
   const data = await Promise.all(

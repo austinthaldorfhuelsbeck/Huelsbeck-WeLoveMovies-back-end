@@ -17,9 +17,6 @@ function readMoviesByTheaterId(theater_id) {
     .join("movies as m", "mt.movie_id", "m.movie_id")
     .distinct("m.*")
     .where({ "mt.theater_id": theater_id })
-  // .select("m.*")
-  // .first()
-  // .then(addMovies)
 }
 
 function list() {
