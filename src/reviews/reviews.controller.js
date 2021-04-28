@@ -38,7 +38,6 @@ async function update(req, res) {
 
 async function destroy(req, res) {
   const review_id = req.params.reviewId
-  console.log(review_id)
   await service.delete(review_id)
   res.sendStatus(204)
 }
