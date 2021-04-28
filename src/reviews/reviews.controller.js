@@ -23,10 +23,16 @@ async function readAndAppend(req, res) {
 }
 
 async function update(req, res) {
-  const updatedReview = { ...req.body }
+  const updatedReview = { ...req.body.data }
   const id = req.params.reviewId
   await service.update(updatedReview, id)
-  const data = await service.readAndAppend(id)
+  const update = await service.readAndAppend(id)
+
+  const now = new Date().toISOString()
+  const timestamp = { created_at: now, updated_at: now }
+
+  const data = { ...update, ...timestamp }
+
   res.json({ data })
 }
 
