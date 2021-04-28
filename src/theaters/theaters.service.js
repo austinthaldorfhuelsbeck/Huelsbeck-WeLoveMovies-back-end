@@ -1,5 +1,5 @@
-const knex = require("../db/connection");
-const mapProperties = require("../utils/map-properties");
+const knex = require("../db/connection")
+const mapProperties = require("../utils/map-properties")
 
 const addMovies = mapProperties({
   movie_id: "movies.movie_id",
@@ -9,17 +9,27 @@ const addMovies = mapProperties({
   description: "movies.description",
   image_url: "movies.image_url",
   is_showing: "movies.is_showing",
-});
+})
+
+function readMoviesByTheaterId(theater_id) {
+  return knex("theaters as t")
+    .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
+    .join("movies as m", "mt.movie_id", "m.movie_id")
+    .distinct("m.*")
+    .where({ "mt.theater_id": theater_id })
+  // .select("m.*")
+  // .first()
+  // .then(addMovies)
+}
 
 function list() {
   return knex("theaters as t")
     .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
     .join("movies as m", "mt.movie_id", "m.movie_id")
-    .select("t.*", "m.*", "mt.is_showing")
-    .first()
-    .then(addMovies);
+    .distinct("t.*")
 }
 
 module.exports = {
+  readMoviesByTheaterId,
   list,
-};
+}

@@ -1,12 +1,27 @@
-const service = require("./theaters.service");
-const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const service = require("./theaters.service")
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
+
+async function readMoviesByTheaterId(req, res) {
+  const theater_id = req.params.theaterId
+  const data = await service.readMoviesByTheaterId(theater_id)
+  res.json({ data })
+}
 
 // TODO: include movies each theater is showing
 async function list(req, res) {
-  const data = await service.list();
-  res.json({ data });
+  const theaters = await service.list()
+  const data = await Promise.all(
+    theaters.map(async (theater) => {
+      const movies = await service.readMoviesByTheaterId(theater.theater_id)
+      theater.movies = movies
+      return theater
+    })
+  )
+
+  res.json({ data })
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
-};
+  readMoviesByTheaterId: asyncErrorBoundary(readMoviesByTheaterId),
+}
