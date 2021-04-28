@@ -18,20 +18,16 @@ function read(req, res) {
 
 async function readAndAppend(req, res) {
   const review = await service.readAndAppend(req.params.reviewId)
-
-  // FORMAT
   review.critic.critic_id = review.critic_id
-
   res.json({ data: review })
 }
 
-async function update(req, res, next) {
+async function update(req, res) {
   const updatedReview = { ...req.body }
-  const { review: reviewData } = res.locals
-  const reviewId = reviewData.review_id
-
-  await service.update(updatedReview, reviewId)
-  return next()
+  const id = req.params.reviewId
+  await service.update(updatedReview, id)
+  const data = await service.readAndAppend(id)
+  res.json({ data })
 }
 
 async function destroy(req, res) {
@@ -44,10 +40,6 @@ async function destroy(req, res) {
 module.exports = {
   read: [asyncErrorBoundary(reviewExists), read],
   readAndAppend: [asyncErrorBoundary(reviewExists), readAndAppend],
-  update: [
-    asyncErrorBoundary(reviewExists),
-    asyncErrorBoundary(update),
-    readAndAppend,
-  ],
+  update: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)],
   delete: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
 }

@@ -1,14 +1,14 @@
-const knex = require("../db/connection");
-const mapProperties = require("../utils/map-properties");
+const knex = require("../db/connection")
+const mapProperties = require("../utils/map-properties")
 
 const addCritic = mapProperties({
   preferred_name: "critic.preferred_name",
   surname: "critic.surname",
   organization_name: "critic.organization_name",
-});
+})
 
 function read(id) {
-  return knex("reviews").select("*").where({ review_id: id });
+  return knex("reviews").select("*").where({ review_id: id })
 }
 
 function readAndAppend(id) {
@@ -17,18 +17,18 @@ function readAndAppend(id) {
     .select("*")
     .where({ review_id: id })
     .first()
-    .then(addCritic);
+    .then(addCritic)
 }
 
 function update(updatedReview, id) {
   return knex("reviews")
     .select("*")
     .where({ review_id: id })
-    .update(updatedReview, "*");
+    .update(updatedReview, "*")
 }
 
 function destroy(id) {
-  return knex("reviews").where({ review_id: id }).del();
+  return knex("reviews").where({ review_id: id }).del()
 }
 
 module.exports = {
@@ -36,4 +36,4 @@ module.exports = {
   readAndAppend,
   update,
   delete: destroy,
-};
+}
