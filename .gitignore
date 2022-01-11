@@ -2,5 +2,5 @@
 
 .env
 
-vercel.json
+# vercel.json
 package-lock.json
